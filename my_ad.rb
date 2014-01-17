@@ -1,14 +1,11 @@
 require_relative 'time_converter'
 class MyAd
 
-  def self.find(name)
-
-    config = YAML::load_file('config.yaml')
-
+  def self.find(name, hash)
     ldap = Net::LDAP.new
     ldap.host = "172.16.2.12"
     ldap.port = 389
-    ldap.auth config['username'], config['password']
+    ldap.auth hash[:username], hash[:password]
     ldap.bind
 
     filter = Net::LDAP::Filter.eq('cn', "#{name}*")

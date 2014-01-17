@@ -1,1 +1,15 @@
-h1 home sweet home sweet home sweet home sweet home sweet home sweet home sweet home
+p= session[:user][:username]
+form action='/search' method='post'
+  input type='text' name='search' placeholder='name of the victim'
+  button type='submit' Search
+
+
+- if @search_result #&& !@search_result.empty?
+  -info = ""
+  p=@search_result
+  -@search_result.each do |person|
+    p= person
+  /  -info += person.split(",").first.gsub("CN=itg_sod_gy", "Den har klassen").gsub("_", " ") + "\n"
+    p= info
+- else
+  p asdfghjkl

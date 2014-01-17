@@ -6,6 +6,7 @@ require 'slim'
 require_relative 'time_converter'
 require_relative 'my_ad'
 require_relative 'person'
+enable :sessions
 
 #people = Person.from_list(MyAd.old_people)
 #puts person
@@ -20,6 +21,7 @@ post '/login' do
   ldap.port = 389
   ldap.auth params[:username], params[:password]
   if ldap.bind && params[:username] != "" && params[:password] != ""
+    session[:user] = {username: params[:username], password: params[:password]}
     redirect '/home'
   else
     redirect '/loginFail'
@@ -31,5 +33,13 @@ get '/loginFail' do
 end
 
 get '/home' do
+  @search_result = Person.from_list(MyAd.find(session[:query], session[:user]))
   slim :home
+end
+
+post '/search' do
+  #search_result = Person.new(MyAd.find(params[:search], session[:user]).first)
+  session[:query] = params[:search]
+  #p session[:query]
+  redirect '/home'
 end
