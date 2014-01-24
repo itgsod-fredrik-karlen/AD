@@ -3,10 +3,12 @@ require 'net/ldap'
 require 'time_diff'
 require 'sinatra'
 require 'slim'
+require 'datamapper'
 require_relative 'time_converter'
 require_relative 'my_ad'
 require_relative 'person'
 enable :sessions
+
 
 #people = Person.from_list(MyAd.old_people)
 #puts person
@@ -28,12 +30,19 @@ post '/login' do
   end
 end
 
+post '/logout' do
+  session.destroy
+  redirect '/'
+end
+
 get '/loginFail' do
   slim :loginFail
 end
 
 get '/home' do
-  @search_result = Person.from_list(MyAd.find(session[:query], session[:user]))
+  if session[:query]
+    @search_result = Person.from_list(MyAd.find(session[:query], session[:user]))
+  end
   slim :home
 end
 
