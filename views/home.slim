@@ -2,7 +2,7 @@ p= session[:user][:username]
 form action='/search' method='post'
   input type='text' name='search' placeholder='name of the victim'
   button type='submit' Search
-form action='/logout' method='post'
+form#logout action='/logout' method='post'
   button type='submit' Log Out
 
 - if @search_result && !@search_result.empty?
